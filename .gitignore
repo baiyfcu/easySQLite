@@ -1,0 +1,4 @@
+libeasysqlite.a
+obj/
+build/
+msvc/
