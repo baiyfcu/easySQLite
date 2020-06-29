@@ -11,9 +11,14 @@ INCLUDE_DIRECTORIES(${EasySQLite_Root})
 
 INCLUDE_DIRECTORIES(${project_Root})
 
-#收集源代码
-file(GLOB EasySQLite_src_list ${EasySQLite_Root}/easySQLite/*.h ${EasySQLite_Root}/easySQLite/*.cpp ${EasySQLite_Root}/easySQLite/*.c ${EasySQLite_Root}/*.cpp)
+option(LIB_EXE "option for lib or exe" OFF)
 
+#收集源代码
+if(LIB_EXE)
+	file(GLOB EasySQLite_src_list ${EasySQLite_Root}/easySQLite/*.h ${EasySQLite_Root}/easySQLite/*.cpp ${EasySQLite_Root}/easySQLite/*.c ${EasySQLite_Root}/*.cpp)
+else()
+	file(GLOB EasySQLite_src_list ${EasySQLite_Root}/easySQLite/*.h ${EasySQLite_Root}/easySQLite/*.cpp ${EasySQLite_Root}/easySQLite/*.c)
+endif()
 #安装目录
 if(WIN32)
     set(INSTALL_PATH_LIB $ENV{HOME}/EasySQLite/lib)
@@ -37,9 +42,12 @@ endif()
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MT")
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /MTd")
 
-#添加库
-#add_library(EasySQLite STATIC ${EasySQLite_src_list})
-add_executable(EasySQLite ${EasySQLite_src_list})
+if(LIB_EXE)
+	add_executable(EasySQLite ${EasySQLite_src_list})
+else()
+	add_library(EasySQLite STATIC ${EasySQLite_src_list})
+endif()
+
 #link_directories(${CMAKE_CURRENT_SOURCE_DIR}/hikDecoder)
 MESSAGE(STATUS "CMAKE_BINARY_DIR: ${CMAKE_BINARY_DIR}")
 
